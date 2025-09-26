@@ -58,5 +58,7 @@
 - [ ] Add final project log entry
 
 ## Notes & References
+- https://www.math.chalmers.se/~donnerda/StochasticControl.pdf
 - Merton, R.C., 1971. “Optimum Consumption and Portfolio Rules in a Continuous-Time Model”
+- Merton, R.C., 1969 "Lifetime portfolio Selection under Uncertainty"
 - Numerical methods: finite difference, dynamic programming, Monte Carlo
