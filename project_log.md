@@ -11,51 +11,31 @@
 - Started write up of the model and recapped establishing the SDE from first principles 
 - Next: simulations with fixed consumption, plot sample paths and Read about Jacobi Bellman.
 
----
+## 2025-10-06
+### restart point
+- The last two weeks I have researched how HJB is derived from first principles. How it can be applied to stochastic control problems
+- I also started programming a solver for the HJB which would allow me to visualise solutions to merton optimisation problems with non CRRA utilities. 
+- I encountered non-convergence issues that prompt me to deepen my understanding of finite-difference schemes such that policy iteration actually converges. 
+### Log. 
+- Researched upwinding and stability writing up a small document on the effects of upwinding on forwards and backwards Euler schemes. Understood the idea of Von-Neumann stability calculations. Concretely, in Von-Neumann stability calculations you assume that a solution to the difference equation can be decomposed into fourier modes with a growth coefficient that needs to be controlled. Didn't analyse convergence or numerical dispersion which can occur in backward euler schemes with central-differences despite unconditional convergence. 
+- Did not find the root cause for the non-convergence of the policy iteration loop of the HJB solver, however. 
+- Next: Come up with a policy iteration toy-model to see if there might be a problem there. 
 
-## Learning Goals
-- [ ] Understand stochastic calculus essentials (Ito's lemma, SDEs)
-- [ ] Understand the Hamilton-Jacobi-Bellman (HJB) equation
-- [ ] Learn numerical methods for solving HJB equations
-- [ ] Understand optimal consumption-investment strategies in continuous-time finance
+## 2025-10-07
+- tried to come up with a toy model that would show how policy iteration works in practice. Failed to come up with anything that wasn't bang-bang or with complicated state controls. 
+- Found that LQR problems are the canonical example 
+- Interogated Ai about why this is the case which yielded a number of interesting difficulties when solving optimal control problems. It became increasingly evident that the merton problem was actually non-trivial. 
+- Found very recent papers talking about FDM schemes and policy iteration for the merton problem with non-Hara utilities that suggest again the non-triviality of the project. 
+- Next: implement toy policy iteration model for LQR followed by a bit of an analysis of the merton problem (viscocity solutions etc.) to see if the project is salvagable. 
 
----
-
-# Merton Project 5-Day Sprint Checklist
-
-## Day 1 — 2025-09-22 ✅
-- [x] Read Merton (1971) paper
-- [o] Take structured notes in `notebooks/merton_notes.ipynb`
-- [o] Sketch intuition diagrams (wealth evolution, consumption-investment trade-offs)
-- [x] Add end-of-day log entry in `project_log.md`
-
-## Day 2 — 2025-09-23
-- [ ] Implement baseline wealth SDE: `dW_t = (r W_t + π_t(μ-r) - C_t) dt + π_t σ dB_t`
-- [ ] Run simple simulations with fixed consumption/investment
-- [ ] Plot sample paths of wealth evolution
-- [ ] Log progress in `project_log.md`
-
-## Day 3 — 2025-09-24
-- [ ] Set up Hamilton-Jacobi-Bellman (HJB) equation
-- [ ] Implement numerical solver (finite difference / dynamic programming)
-- [ ] Test solver with simple parameters
-- [ ] Visualize optimal consumption/investment strategies
-- [ ] Log findings in `project_log.md`
-
-## Day 4 — 2025-09-25
-- [ ] Generate Monte Carlo simulations of wealth evolution
-- [ ] Compare strategies under different parameters: risk aversion, horizon, volatility
-- [ ] Plot consumption vs wealth, portfolio allocations, wealth paths
-- [ ] Debug discrepancies between HJB solution and simulations
-- [ ] Update notebook with plots and results
-
-## Day 5 — 2025-09-26
-- [ ] Introduce constraints (e.g., no borrowing, discrete-time steps)
-- [ ] Optional: extend to multi-asset or stochastic interest rate
-- [ ] Clean up code in `src/`
-- [ ] Finalize notebooks and visualizations
-- [ ] Update `README.md` with project overview, methodology, key plots
-- [ ] Add final project log entry
+## 2025-10-15
+- The last week I have been working intermittently on a toy model for policy iteration: the 1D LQR optimal control problem.
+- After solving a simple problem by hand, I proceeded to try and develop a finite difference solver for the problem. 
+- Implicit scheme for the PDE was robust without a policy iteration loop (effectively keeping the control constant at zero). The behaviour of the state variable was correctly approximated. 
+- With a policy iteration optimal control loop, we experienced serious divergences. I used forward differences in the hope it would be sufficiently numerically robust for initial testing. The divergences were so extreme they led to overflow errors.
+- I implemented an upwind scheme in order to mitigate the instabilities. Non-convergence of the objective function is still a problem however. It may be an implementation error
+- Next: Understand whether the behaviour is a numerical instability or an implementation error. 
+- Pause: The project's scope is extending far beyond what was initially intended. In order to stop it being an interminable time sync, I have decided to move onto my next two project and return once those are finished. It will also keep my motivation higher. 
 
 ## Notes & References
 - https://www.math.chalmers.se/~donnerda/StochasticControl.pdf
